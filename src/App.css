@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: dodgerblue;
+}
+
+.cuerpo {
+  text-align: center;
+  width: 100%;
+  height: 88%;
+  background-image: url("./img/Frame1.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 700px;
+}

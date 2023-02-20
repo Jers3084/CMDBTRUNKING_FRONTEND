@@ -2,21 +2,26 @@ import { useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import { Buscar } from "./components/Buscar/Buscar";
-import { Registrar } from "./components/Registrar/Registrar";
+import { RegistrarServ } from "./components/RegistrarServ/RegistrarServ";
 import { Home } from "./components/Home/Home";
 import { Logout } from "./components/Logout/Logout";
-import { Usuarios } from "./components/Usuarios/Usuarios";
-import { Nav } from "./components/Nav/Nav";
+import { RegUsuarios } from "./components/RegUsuarios/RegUsuarios";
+import { Navbar } from "./components/Navbar/Navbar";
 import { UserContext } from "./Context/UserContext";
 import Login from "./components/Login/Login";
 import PerfildeUsuario from "./components/PerfildeUsuario/PerfildeUsuario";
 import CambiarPassword from "./components/CambiarPassword/CambiarPassword";
+import { MostrarUsuarios } from "./components/MostrarUsuarios/MostrarUsuarios";
+import { EditarUsuario } from "./components/EditarUsuario/EditarUsuario";
 
 function App() {
   const [userc, setUserc] = useState({
     token: false,
-    shopping: [],
-    cantidad: 0,
+    identificador: "",
+    nombre: "",
+    correo: "",
+    alias: "",
+    tipousuario: "",
     index: 0,
     tokenUsuario: "",
     idUsuario: "",
@@ -26,14 +31,14 @@ function App() {
     <div className="App">
       <UserContext.Provider value={{ userc, setUserc }}>
         <BrowserRouter>
-          <Nav />
+          <Navbar />
           <div className="cuerpo">
             <Switch>
               <Route path="/" exact>
                 <Home />
               </Route>
-              <Route path="/registrar">
-                <Registrar />
+              <Route path="/registrarserv">
+                <RegistrarServ />
               </Route>
               <Route path="/buscar">
                 <Buscar />
@@ -50,8 +55,14 @@ function App() {
               <Route path="/logout">
                 <Logout />
               </Route>
-              <Route path="/usuarios">
-                <Usuarios />
+              <Route path="/regusuarios">
+                <RegUsuarios />
+              </Route>
+              <Route path="/mostrarusuarios">
+                <MostrarUsuarios />
+              </Route>
+              <Route path="/editarusuario">
+                <EditarUsuario />
               </Route>
             </Switch>
           </div>

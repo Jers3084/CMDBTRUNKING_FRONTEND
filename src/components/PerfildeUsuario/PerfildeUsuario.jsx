@@ -6,19 +6,26 @@ import { UserContext } from "../../Context/UserContext";
 function PerfildeUsuario(props) {
   const { userc } = useContext(UserContext);
   var id = userc.idUsuario;
+  userc.identificador = id;
   var nombreU = sessionStorage.getItem("nombreUsuario");
+  userc.nombre = nombreU;
   var usernameU = sessionStorage.getItem("cuentaUsuario");
+  userc.alias = usernameU;
   var correoU = sessionStorage.getItem("correoUsuario");
+  var rolU = sessionStorage.getItem("rolUsuario");
   var token = userc.tokenUsuario;
   const [editar, setEditar] = useState(false);
   const [nombre, setNombre] = useState(nombreU);
   const [email, setEmail] = useState(correoU);
+  const [username, setUsername] = useState(usernameU);
+  const [rol, setRol] = useState(rolU);
 
   const handleSubmitr = async (e) => {
     e.preventDefault();
     await updateRegistro();
     setNombre(nombreU);
     setEmail(correoU);
+    setRol(rolU);
     setEditar(false);
   };
 
@@ -34,10 +41,9 @@ function PerfildeUsuario(props) {
       })
         .then((response) => response.json())
         .then((response) => {
-          nombreU = response.data.nombre;
-          sessionStorage.setItem("nombreUsuario", nombreU);
-          correoU = response.data.email;
-          sessionStorage.setItem("correoUsuario", correoU);
+          console.log(response);
+          sessionStorage.setItem("nombreUsuario", response.data.nombre);
+          sessionStorage.setItem("correoUsuario", response.data.email);
           alert("Registro Actualizado");
         });
     } catch (e) {
@@ -69,7 +75,7 @@ function PerfildeUsuario(props) {
           <h2 className={styles.titulo}>Perfil del Usuario</h2>
           <form className={styles.formato}>
             <div className={styles.fullentry}>
-              <label htmlFor="validationCustom01" className={styles.formlabel}>
+              <label htmlFor="inputNombre" className={styles.formlabel}>
                 Nombre
               </label>
               <input
@@ -77,12 +83,12 @@ function PerfildeUsuario(props) {
                 type="text"
                 className={styles.formcontrol}
                 id="inputNombre"
-                value={nombreU}
+                value={nombre}
               />
             </div>
 
             <div className={styles.fullentry}>
-              <label htmlFor="validationCustom02" className={styles.formlabel}>
+              <label htmlFor="inputEmail" className={styles.formlabel}>
                 E-mail
               </label>
               <input
@@ -90,15 +96,12 @@ function PerfildeUsuario(props) {
                 type="email"
                 className={styles.formcontrol}
                 id="inputEmail"
-                value={correoU}
+                value={email}
               />
             </div>
 
             <div className={styles.fullentry}>
-              <label
-                htmlFor="validationCustomUsername"
-                className={styles.formlabel}
-              >
+              <label htmlFor="inputUsername" className={styles.formlabel}>
                 Username
               </label>
               <input
@@ -106,10 +109,21 @@ function PerfildeUsuario(props) {
                 type="text"
                 className={styles.formcontrol}
                 id="inputUsername"
-                aria-describedby="inputGroupPrepend"
                 placeholder="Username"
-                required
-                value={usernameU}
+                value={username}
+              />
+            </div>
+
+            <div className={styles.fullentry}>
+              <label htmlFor="inputUseRol" className={styles.formlabel}>
+                Rol
+              </label>
+              <input
+                readOnly
+                type="text"
+                className={styles.formcontrol}
+                id="inputUseRol"
+                value={rol}
               />
             </div>
 
@@ -129,10 +143,10 @@ function PerfildeUsuario(props) {
         </div>
       ) : (
         <div className={styles.contenedor}>
-          <h2 className={styles.titulo}>Perfil del Usuario</h2>
+          <h2 className={styles.titulo}>Editar Perfil del Usuario</h2>
           <form className={styles.formato} onSubmit={handleSubmitr}>
             <div className={styles.fullentry}>
-              <label htmlFor="validationCustom01" className={styles.formlabel}>
+              <label htmlFor="inputNombre" className={styles.formlabel}>
                 Nombre
               </label>
               <input
@@ -147,7 +161,7 @@ function PerfildeUsuario(props) {
             </div>
 
             <div className={styles.fullentry}>
-              <label htmlFor="validationCustom02" className={styles.formlabel}>
+              <label htmlFor="inputEmail" className={styles.formlabel}>
                 E-mail
               </label>
               <input
@@ -163,10 +177,7 @@ function PerfildeUsuario(props) {
             </div>
 
             <div className={styles.fullentry}>
-              <label
-                htmlFor="validationCustomUsername"
-                className={styles.formlabel}
-              >
+              <label htmlFor="inputUsername" className={styles.formlabel}>
                 Username
               </label>
               <input
@@ -174,10 +185,22 @@ function PerfildeUsuario(props) {
                 type="text"
                 className={styles.formcontrol}
                 id="inputUsername"
-                aria-describedby="inputGroupPrepend"
                 placeholder="Username"
                 required
-                value={usernameU}
+                value={username}
+              />
+            </div>
+
+            <div className={styles.fullentry}>
+              <label htmlFor="inputUseRol" className={styles.formlabel}>
+                Rol
+              </label>
+              <input
+                readOnly
+                type="text"
+                className={styles.formcontrol}
+                id="inputUseRol"
+                value={rol}
               />
             </div>
 

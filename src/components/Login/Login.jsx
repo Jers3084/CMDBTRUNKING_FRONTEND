@@ -29,12 +29,14 @@ const Login = (props) => {
           if (response.success) {
             const tokenU = response.data.token;
             const cUsuario = response.data.user.username;
-            const nombre = response.data.user.nombre;
-            const correo = response.data.user.email;
+            const nombreu = response.data.user.nombre;
+            const correou = response.data.user.email;
+            const rolu = response.data.user.rol;
             userc.tokenUsuario = tokenU;
             sessionStorage.setItem("cuentaUsuario", cUsuario);
-            sessionStorage.setItem("nombreUsuario", nombre);
-            sessionStorage.setItem("correoUsuario", correo);
+            sessionStorage.setItem("nombreUsuario", nombreu);
+            sessionStorage.setItem("correoUsuario", correou);
+            sessionStorage.setItem("rolUsuario", rolu);
             userc.idUsuario = response.data.user._id;
             userc.token = true;
             setUserc({ ...userc });

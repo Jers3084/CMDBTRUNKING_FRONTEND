@@ -5,8 +5,10 @@ import { UserContext } from "../../Context/UserContext";
 
 const CambiarPassword = (props) => {
   const { userc } = useContext(UserContext);
-  var id = userc.idUsuario;
+  var id = userc.identificador;
   var nombreU = sessionStorage.getItem("nombreUsuario");
+  var nombre = userc.nombre;
+  var username = userc.alias;
   var token = userc.tokenUsuario;
   const [password, setPassword] = useState("");
   const [vpassword, setVpassword] = useState("");
@@ -51,7 +53,7 @@ const CambiarPassword = (props) => {
         <h2 className={styles.titulo}>Cambiar Password</h2>
         <form className={styles.formato} onSubmit={handleSubmitr}>
           <div className={styles.fullentry}>
-            <label htmlFor="validationCustom01" className={styles.formlabel}>
+            <label htmlFor="inputNombre" className={styles.formlabel}>
               Nombre
             </label>
             <input
@@ -59,21 +61,31 @@ const CambiarPassword = (props) => {
               type="text"
               className={styles.formcontrol}
               id="inputNombre"
-              value={nombreU}
+              value={nombre}
             />
           </div>
+
           <div className={styles.fullentry}>
-            <label
-              htmlFor="validationCustomUsername"
-              className={styles.formlabel}
-            >
+            <label htmlFor="inputUsername" className={styles.formlabel}>
+              Nombre
+            </label>
+            <input
+              readOnly
+              type="text"
+              className={styles.formcontrol}
+              id="inputUsername"
+              value={username}
+            />
+          </div>
+
+          <div className={styles.fullentry}>
+            <label htmlFor="inputPassword1" className={styles.formlabel}>
               Introducir Nuevo Password
             </label>
             <input
               type="password"
               className={styles.formcontrol}
               id="inputPassword1"
-              aria-describedby="inputGroupPrepend"
               placeholder="Password"
               required
               value={password}
@@ -83,17 +95,13 @@ const CambiarPassword = (props) => {
             />
           </div>
           <div className={styles.fullentry}>
-            <label
-              htmlFor="validationCustomUsername"
-              className={styles.formlabel}
-            >
+            <label htmlFor="inputPasswordv" className={styles.formlabel}>
               Repetir Nuevo Password
             </label>
             <input
               type="password"
               className={styles.formcontrol}
               id="inputPasswordv"
-              aria-describedby="inputGroupPrepend"
               placeholder="Password"
               required
               value={vpassword}

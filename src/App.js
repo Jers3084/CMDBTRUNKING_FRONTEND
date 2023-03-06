@@ -13,6 +13,7 @@ import PerfildeUsuario from "./components/PerfildeUsuario/PerfildeUsuario";
 import CambiarPassword from "./components/CambiarPassword/CambiarPassword";
 import { MostrarUsuarios } from "./components/MostrarUsuarios/MostrarUsuarios";
 import { EditarUsuario } from "./components/EditarUsuario/EditarUsuario";
+import { Editarserv } from "./components/Editarserv/Editarserv";
 
 function App() {
   const [userc, setUserc] = useState({
@@ -25,6 +26,7 @@ function App() {
     index: 0,
     tokenUsuario: "",
     idUsuario: "",
+    service: {},
   });
 
   return (
@@ -63,6 +65,9 @@ function App() {
               </Route>
               <Route path="/editarusuario">
                 <EditarUsuario />
+              </Route>
+              <Route path="/editarserv">
+                <Editarserv />
               </Route>
             </Switch>
           </div>

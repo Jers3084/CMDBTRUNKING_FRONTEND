@@ -20,13 +20,22 @@
 }
 
 .contenedor {
-  width: 100%;
+  width: auto;
   height: 88vh;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 0 auto;
+  align-content: center;
   align-items: center;
   text-align: center;
   background-color: var(--Azul4);
+}
+
+.encabezado {
+  width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .titulo {
@@ -45,7 +54,7 @@
   background-color: var(--Background);
   border: var(--Azul1) 2px solid;
   border-radius: 12px;
-  font-size: 1em;
+  font-size: 10px;
   font-family: sans-serif;
   min-width: 450px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);

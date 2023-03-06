@@ -21,13 +21,14 @@
 }
 
 .nav_style {
-  width: 100%;
+  width: 1280px; /*1280px */
   height: 70px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   background-color: var(--Azul6);
+  border: #cc3300 1px solid;
 }
 
 .navbar_list {
@@ -79,7 +80,7 @@
 }
 
 .navbar_font {
-  font-size: 25px;
+  font-size: 20px;
   text-decoration: none;
   font-weight: bold;
   color: var(--Azul1);
@@ -87,14 +88,14 @@
 
 .navbar_font:hover {
   transition-duration: 0.3s;
-  font-size: 25px;
+  font-size: 21px;
   text-decoration: none;
   font-weight: bold;
   color: var(--Blanco);
 }
 
 .container_logo {
-  padding-left: 5px;
+  padding-left: 20px;
   padding-top: 2px;
   height: 70px;
 }

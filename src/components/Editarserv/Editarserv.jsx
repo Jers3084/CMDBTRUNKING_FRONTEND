@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import styles from "./RegistrarServ.module.css";
+import styles from "./Editarserv.module.css";
 import { UserContext } from "../../Context/UserContext";
 
-export const RegistrarServ = (props) => {
+export const Editarserv = () => {
   const {
     register,
     handleSubmit,
@@ -13,24 +13,28 @@ export const RegistrarServ = (props) => {
   } = useForm();
   const { userc } = useContext(UserContext);
   const History = useHistory();
+  var tokenRegu = userc.tokenUsuario;
+  var serv = userc.service;
 
   if (!userc.token) {
     History.push("/login");
   }
 
   const onSubmit = (data) => {
-    enviarRegistro(data);
+    data._id = serv._id;
+    actualizarRegistro(data);
     reset();
   };
 
-  const enviarRegistro = async (objeto) => {
+  const actualizarRegistro = async (objeto) => {
     //Envia el formulario
     try {
-      await fetch("http://localhost:9000/api/servicios/", {
+      await fetch("http://localhost:9000/api/servicios/actualizar", {
         method: "POST",
         body: JSON.stringify(objeto), // data {object}
         headers: {
           "Content-Type": "application/json",
+          authorization: tokenRegu,
         },
       })
         .then((response) => response.json())
@@ -51,12 +55,7 @@ export const RegistrarServ = (props) => {
 
   const cancel = () => {
     //Salir del formulario
-    History.push("/");
-  };
-
-  const borrarformulario = () => {
-    //Borra formulario
-    reset();
+    History.push("/buscar");
   };
 
   return (
@@ -68,7 +67,7 @@ export const RegistrarServ = (props) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <section className={styles.tituloPrincipal}>
-            <h1>Inventario de Radios Trunking (Registrar Servicio)</h1>
+            <h1>Inventario de Radios Trunking (Editar Servicio)</h1>
           </section>
 
           <section className={styles.tituloFormato}>
@@ -85,6 +84,7 @@ export const RegistrarServ = (props) => {
                 type="text"
                 placeholder="Serie"
                 id="serie"
+                defaultValue={serv.serie}
                 {...register("serie", { required: true, maxLength: 10 })}
               />
               {errors.serie?.type === "required" && (
@@ -103,6 +103,7 @@ export const RegistrarServ = (props) => {
                 type="text"
                 placeholder="Marca"
                 id="marca"
+                defaultValue={serv.marca}
                 {...register("marca", { required: true, maxLength: 10 })}
               />
               {errors.marca?.type === "required" && (
@@ -121,6 +122,7 @@ export const RegistrarServ = (props) => {
                 type="text"
                 placeholder="Modelo"
                 id="modelo"
+                defaultValue={serv.modelo}
                 {...register("modelo", { required: true, maxLength: 12 })}
               />
               {errors.modelo?.type === "required" && (
@@ -140,6 +142,7 @@ export const RegistrarServ = (props) => {
                 type="text"
                 placeholder="Submodelo"
                 id="submodelo"
+                defaultValue={serv.submodelo}
                 {...register("submodelo", { required: true, maxLength: 10 })}
               />
               {errors.submodelo?.type === "required" && (
@@ -157,7 +160,7 @@ export const RegistrarServ = (props) => {
               <select
                 className={styles.entrada}
                 id="tecnologia"
-                defaultValue={"trunking"}
+                defaultValue={serv.tecnologia}
                 {...register("tecnologia")}
               >
                 <option value="trunking">Trunking</option>
@@ -172,7 +175,7 @@ export const RegistrarServ = (props) => {
               <select
                 className={styles.entrada}
                 id="tiporadio"
-                defaultValue={"portatil"}
+                defaultValue={serv.tiporadio}
                 {...register("tiporadio")}
               >
                 <option value="portatil">Portatil</option>
@@ -194,6 +197,7 @@ export const RegistrarServ = (props) => {
                 id="id"
                 type="number"
                 placeholder="Id"
+                defaultValue={serv.identificador}
                 {...register("identificador", {
                   required: true,
                   min: 0,
@@ -219,7 +223,7 @@ export const RegistrarServ = (props) => {
                   <select
                     className={styles.entradafacil}
                     id="cobertura"
-                    defaultValue={"amplia"}
+                    defaultValue={serv.cobertura}
                     {...register("cobertura")}
                   >
                     <option value="amplia">Amplia</option>
@@ -235,7 +239,7 @@ export const RegistrarServ = (props) => {
                     className={styles.entradacheck}
                     name="callgroup"
                     id="callgroup"
-                    defaultValue={"si"}
+                    defaultValue={serv.callgroup}
                     {...register("callgroup")}
                   >
                     <option value="si">Si</option>
@@ -250,7 +254,7 @@ export const RegistrarServ = (props) => {
                     className={styles.entradacheck}
                     name="callpriv"
                     id="callpriv"
-                    defaultValue={"si"}
+                    defaultValue={serv.callpriv}
                     {...register("callpriv")}
                   >
                     <option value="si">Si</option>
@@ -265,7 +269,7 @@ export const RegistrarServ = (props) => {
                     className={styles.entradacheck}
                     name="calltel"
                     id="calltel"
-                    defaultValue={"no"}
+                    defaultValue={serv.acctel}
                     {...register("acctel")}
                   >
                     <option value="si">Si</option>
@@ -280,7 +284,7 @@ export const RegistrarServ = (props) => {
                     className={styles.entradacheck}
                     name="callemer"
                     id="callemer"
-                    defaultValue={"no"}
+                    defaultValue={serv.callemerg}
                     {...register("callemerg")}
                   >
                     <option value="si">Si</option>
@@ -302,7 +306,7 @@ export const RegistrarServ = (props) => {
                 className={styles.entradacorta}
                 id="zonausuario"
                 name="zonausuario"
-                defaultValue="SUR"
+                defaultValue={serv.zonausuario}
                 {...register("zonausuario")}
               >
                 <option value="sur">SUR</option>
@@ -324,6 +328,7 @@ export const RegistrarServ = (props) => {
                   id="nombre"
                   name="nombre"
                   placeholder="Nombre"
+                  defaultValue={serv.nombre}
                   {...register("nombre", { required: true, maxLength: 40 })}
                 />
                 {errors.nombre?.type === "required" && (
@@ -343,6 +348,7 @@ export const RegistrarServ = (props) => {
                   id="ficha"
                   name="ficha"
                   placeholder="Ficha"
+                  defaultValue={serv.ficha}
                   {...register("ficha", {
                     required: true,
                     min: 20000,
@@ -367,6 +373,7 @@ export const RegistrarServ = (props) => {
                   id="nivel"
                   name="nivel"
                   placeholder="Nivel"
+                  defaultValue={serv.nivel}
                   {...register("nivel", { required: true, min: 1, max: 50 })}
                 />
                 {errors.nivel?.type === "required" && (
@@ -383,7 +390,7 @@ export const RegistrarServ = (props) => {
                   className={styles.entradacorta}
                   id="regimen"
                   name="regimen"
-                  defaultValue="PC"
+                  defaultValue={serv.regimen}
                   {...register("regimen")}
                 >
                   <option value="PC">PC</option>
@@ -402,6 +409,7 @@ export const RegistrarServ = (props) => {
                   id="telefono"
                   name="telefono"
                   placeholder="Telefono"
+                  defaultValue={serv.telefono}
                   {...register("telefono", { maxLength: 10, pattern: [0 - 9] })}
                 />
                 {errors.telefono?.type === "maxlength" && (
@@ -421,6 +429,7 @@ export const RegistrarServ = (props) => {
                   id="email"
                   name="email"
                   placeholder="email@correo.com"
+                  defaultValue={serv.email}
                   {...register("email")}
                 />
               </div>
@@ -438,7 +447,7 @@ export const RegistrarServ = (props) => {
                     className={styles.entradacorta}
                     id="organismo_usuario"
                     name="organismo_usuario"
-                    defaultValue="Pemex Coorporativo"
+                    defaultValue={serv.organismo}
                     {...register("organismo")}
                   >
                     <option value="Pemex Coorporativo">Coorp</option>
@@ -458,6 +467,7 @@ export const RegistrarServ = (props) => {
                     type="text"
                     id="subdireccion"
                     name="subdireccion"
+                    defaultValue={serv.subdireccion}
                     {...register("subdireccion", {
                       required: true,
                       minlength: 4,
@@ -483,6 +493,7 @@ export const RegistrarServ = (props) => {
                     type="number"
                     id="clv_subdireccion"
                     name="clv_subdireccion"
+                    defaultValue={serv.clvsubdireccion}
                     {...register("clvsubdireccion", {
                       min: 0,
                       max: 99999,
@@ -503,6 +514,7 @@ export const RegistrarServ = (props) => {
                     type="text"
                     id="gerencia"
                     name="gerencia"
+                    defaultValue={serv.gerencia}
                     {...register("gerencia", {
                       required: true,
                       minlength: 4,
@@ -528,6 +540,7 @@ export const RegistrarServ = (props) => {
                     type="number"
                     id="clv_gerencia"
                     name="clv_gerencia"
+                    defaultValue={serv.clvgerencia}
                     {...register("clvgerencia", {
                       min: 0,
                       max: 99999,
@@ -548,6 +561,7 @@ export const RegistrarServ = (props) => {
                     type="text"
                     id="superintendencia"
                     name="superintendencia"
+                    defaultValue={serv.suptcia}
                     {...register("suptcia", {
                       minlength: 4,
                       maxLength: 50,
@@ -575,6 +589,7 @@ export const RegistrarServ = (props) => {
                     type="number"
                     id="clv_superintendencia"
                     name="clv_superintendencia"
+                    defaultValue={serv.clvsuptcia}
                     {...register("clvsuptcia", {
                       min: 0,
                       max: 99999,
@@ -595,6 +610,7 @@ export const RegistrarServ = (props) => {
                     type="text"
                     id="departamento"
                     name="departamento"
+                    defaultValue={serv.depto}
                     {...register("depto", {
                       required: true,
                       minlength: 4,
@@ -620,6 +636,7 @@ export const RegistrarServ = (props) => {
                     type="number"
                     id="clvdepto_usuario"
                     name="clvdepto_usuario"
+                    defaultValue={serv.clvdepto}
                     {...register("clvdepto", {
                       required: true,
                       min: 0,
@@ -641,6 +658,7 @@ export const RegistrarServ = (props) => {
                     type="text"
                     id="ct_usuario"
                     name="ct_usuario"
+                    defaultValue={serv.centrotrab}
                     {...register("centrotrab", {
                       required: true,
                       minlength: 4,
@@ -666,6 +684,7 @@ export const RegistrarServ = (props) => {
                     type="number"
                     id="clvct_usuario"
                     name="clvct_usuario"
+                    defaultValue={serv.clvct}
                     {...register("clvct", {
                       required: true,
                       min: 0,
@@ -689,7 +708,7 @@ export const RegistrarServ = (props) => {
                 className={styles.entradacorta}
                 id="zonaadmon"
                 name="zonaadmon"
-                defaultValue="SUR"
+                defaultValue={serv.zonadmon}
                 {...register("zonadmon")}
               >
                 <option value="sur">SUR</option>
@@ -710,6 +729,7 @@ export const RegistrarServ = (props) => {
                   type="text"
                   id="ct_admon"
                   name="ct_admon"
+                  defaultValue={serv.ctadmon}
                   {...register("ctadmon", {
                     required: true,
                     minlength: 4,
@@ -735,6 +755,7 @@ export const RegistrarServ = (props) => {
                   type="number"
                   id="cct_admon"
                   name="cct_admon"
+                  defaultValue={serv.clvctadmon}
                   {...register("clvctadmon", {
                     required: true,
                     min: 0,
@@ -753,6 +774,7 @@ export const RegistrarServ = (props) => {
                   className={styles.entradalarga}
                   name="observaciones"
                   id="observaciones"
+                  defaultValue={serv.observaciones}
                   {...register("observaciones", {
                     required: true,
                     rows: 2,
@@ -767,15 +789,9 @@ export const RegistrarServ = (props) => {
               <button className={styles.boton} type="button" onClick={cancel}>
                 Salir
               </button>
-              <button
-                className={styles.boton}
-                type="button"
-                onClick={borrarformulario}
-              >
-                Borrar Formulario
-              </button>
+
               <button className={styles.boton} type="submit">
-                Registrar Servicio
+                Actualizar Servicio
               </button>
             </div>
           </footer>
@@ -784,4 +800,3 @@ export const RegistrarServ = (props) => {
     </div>
   );
 };
-export default RegistrarServ;

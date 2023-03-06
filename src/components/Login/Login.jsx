@@ -17,7 +17,7 @@ const Login = (props) => {
 
   const enviarLogin = async () => {
     try {
-      fetch("http://localhost:9000/api/usuarios/login", {
+      await fetch("http://localhost:9000/api/usuarios/login", {
         method: "POST",
         body: JSON.stringify({ username, password }), // data can be `string` or {object}!
         headers: {

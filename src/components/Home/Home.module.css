@@ -20,8 +20,18 @@
 }
 
 .seccion1 {
+  padding-top: 10px;
   width: 100%;
   height: 84vh;
   text-align: center;
-  color: var(--Amarillo);
+  color: var(--Azul1);
+  background-color: var(--Azul4);
+  background-image: url("./img/Frame1.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 600px;
+}
+
+.piedepagina {
+  background-color: var(--Azul4);
 }

@@ -5,7 +5,7 @@ import { UserContext } from "../../Context/UserContext";
 
 export const MostrarUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
-  const { userc, setUserc } = useContext(UserContext);
+  const { userc } = useContext(UserContext);
   const tokendusuario = userc.tokenUsuario;
   const ruta = useHistory();
 

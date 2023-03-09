@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import styles from "./EditarUsuario.module.css";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 
 export const EditarUsuario = () => {
   const { userc } = useContext(UserContext);
@@ -11,6 +12,10 @@ export const EditarUsuario = () => {
   const [username, setUsername] = useState(userc.alias);
   const [rol, setRol] = useState(userc.tipousuario);
   const [password, setPassword] = useState("");
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
   const ruta = useHistory();
   var tokenRegu = userc.tokenUsuario;
 
@@ -39,11 +44,18 @@ export const EditarUsuario = () => {
           setUsername(response.data.username);
           setRol(response.data.rol);
           setPassword(response.data.password);
-          alert("Registro Actualizado");
+          setEncabezadoModal("Succesfull");
+          setTituloModal("Registro Actualizado");
+          setMensajeModal(response.message);
+          setEstadoModal(true);
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
     }
   };
 
@@ -61,91 +73,103 @@ export const EditarUsuario = () => {
   };
 
   return (
-    <div className={styles.contenedor}>
-      <h2 className={styles.titulo}>Editar Usuario</h2>
-      <form className={styles.formato} onSubmit={handleSubmitr}>
-        <div className={styles.fullentry}>
-          <label htmlFor="inputNombre" className={styles.formlabel}>
-            Nombre
-          </label>
-          <input
-            type="text"
-            className={styles.formcontrol}
-            id="inputNombre"
-            value={nombre}
-            onChange={(e) => {
-              setNombre(e.target.value);
-            }}
-          />
-        </div>
+    <>
+      <div className={styles.contenedor}>
+        <h2 className={styles.titulo}>Editar Usuario</h2>
+        <form className={styles.formato} onSubmit={handleSubmitr}>
+          <div className={styles.fullentry}>
+            <label htmlFor="inputNombre" className={styles.formlabel}>
+              Nombre
+            </label>
+            <input
+              type="text"
+              className={styles.formcontrol}
+              id="inputNombre"
+              value={nombre}
+              onChange={(e) => {
+                setNombre(e.target.value);
+              }}
+            />
+          </div>
 
-        <div className={styles.fullentry}>
-          <label htmlFor="inputEmail" className={styles.formlabel}>
-            E-mail
-          </label>
-          <input
-            type="email"
-            className={styles.formcontrol}
-            id="inputEmail"
-            value={email}
-            required
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </div>
+          <div className={styles.fullentry}>
+            <label htmlFor="inputEmail" className={styles.formlabel}>
+              E-mail
+            </label>
+            <input
+              type="email"
+              className={styles.formcontrol}
+              id="inputEmail"
+              value={email}
+              required
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
 
-        <div className={styles.fullentry}>
-          <label htmlFor="inputUsername" className={styles.formlabel}>
-            Username
-          </label>
-          <input
-            readOnly
-            type="text"
-            className={styles.formcontrol}
-            id="inputUsername"
-            placeholder="Username"
-            required
-            value={username}
-          />
-        </div>
+          <div className={styles.fullentry}>
+            <label htmlFor="inputUsername" className={styles.formlabel}>
+              Username
+            </label>
+            <input
+              readOnly
+              type="text"
+              className={styles.formcontrol}
+              id="inputUsername"
+              placeholder="Username"
+              required
+              value={username}
+            />
+          </div>
 
-        <div className={styles.fullentry}>
-          <label htmlFor="inputRol" className={styles.formlabel}>
-            Rol
-          </label>
-          <select
-            className={styles.formcontrol}
-            id="inputRol"
-            name="rol"
-            defaultValue={rol}
-            onChange={(e) => {
-              setRol(e.target.value);
-            }}
-          >
-            <option value="usuario">Usuario</option>
-            <option value="administrador">Administrador</option>
-          </select>
-        </div>
+          <div className={styles.fullentry}>
+            <label htmlFor="inputRol" className={styles.formlabel}>
+              Rol
+            </label>
+            <select
+              className={styles.formcontrol}
+              id="inputRol"
+              name="rol"
+              defaultValue={rol}
+              onChange={(e) => {
+                setRol(e.target.value);
+              }}
+            >
+              <option value="usuario">Usuario</option>
+              <option value="administrador">Administrador</option>
+            </select>
+          </div>
 
-        <div className={styles.contenBoton}>
-          <button className={styles.boton} type="submit">
-            Actualizar
-          </button>
+          <div className={styles.contenBoton}>
+            <button className={styles.boton} type="submit">
+              Actualizar
+            </button>
 
-          <button className={styles.boton} type="button" onClick={cancel}>
-            Cancelar
-          </button>
+            <button className={styles.boton} type="button" onClick={cancel}>
+              Cancelar
+            </button>
 
-          <button
-            className={styles.boton}
-            type="button"
-            onClick={actualizarPassword}
-          >
-            Cambiar Password
-          </button>
-        </div>
-      </form>
-    </div>
+            <button
+              className={styles.boton}
+              type="button"
+              onClick={actualizarPassword}
+            >
+              Cambiar Password
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
+      )}
+    </>
   );
 };

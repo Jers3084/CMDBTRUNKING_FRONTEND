@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import styles from "./CambiarPassword.module.css";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 
 const CambiarPassword = (props) => {
   const { userc } = useContext(UserContext);
@@ -12,15 +13,22 @@ const CambiarPassword = (props) => {
   var token = userc.tokenUsuario;
   const [password, setPassword] = useState("");
   const [vpassword, setVpassword] = useState("");
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
 
   const handleSubmitr = async (e) => {
     e.preventDefault();
     if (password === vpassword) {
       await updatePassword();
-      alert("Password Actualizado");
       props.history.push("/");
     } else {
       alert("Los Passwords introducidos no son iguales");
+      setEncabezadoModal("Error");
+      setTituloModal("Error de registro de Password");
+      setMensajeModal("Los Passwords introducidos no son iguales");
+      setEstadoModal(true);
     }
   };
 
@@ -37,10 +45,18 @@ const CambiarPassword = (props) => {
         .then((response) => response.json())
         .then((response) => {
           console.log(response);
+          setEncabezadoModal("Succesfull");
+          setTituloModal("Password");
+          setMensajeModal(response.message);
+          setEstadoModal(true);
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
     }
   };
   const saliraperfil = () => {
@@ -125,6 +141,16 @@ const CambiarPassword = (props) => {
           </div>
         </form>
       </div>
+
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
+      )}
     </>
   );
 };

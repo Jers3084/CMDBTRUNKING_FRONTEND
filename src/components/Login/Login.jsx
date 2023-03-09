@@ -2,11 +2,16 @@ import React, { useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import styles from "./Login.module.css";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 
 const Login = (props) => {
   const { userc, setUserc } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
 
   const handleSubmitl = async (e) => {
     e.preventDefault();
@@ -44,57 +49,74 @@ const Login = (props) => {
             setPassword("");
             props.history.push("/");
           } else {
-            alert("usuario o password erroneos");
+            setEncabezadoModal("Error");
+            setTituloModal("Login");
+            setMensajeModal("usuario o password erroneos");
+            setEstadoModal(true);
           }
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
-      alert("Error de autenticacion");
+      setEncabezadoModal("Error");
+      setTituloModal("Error de autenticacion");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
     }
   };
 
   return (
-    <div className={styles.contenedor}>
-      <h2 className={styles.titulo}>Iniciar Sesión</h2>
-      <form className={styles.formato} onSubmit={handleSubmitl}>
-        <div className={styles.fullentry}>
-          <label htmlFor="userN" className={styles.formlabel}>
-            Nombre de Usuario:
-          </label>
-          <input
-            type="text"
-            className={styles.formcontrol}
-            id="userN"
-            value={username}
-            placeholder="Username"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-        </div>
-        <div className={styles.fullentry}>
-          <label htmlFor="inputPassword" className={styles.formlabel}>
-            Password
-          </label>
-          <input
-            type="password"
-            className={styles.formcontrol}
-            id="inputPassword"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
-        <div className={styles.contenBoton}>
-          <button type="submit" className={styles.boton}>
-            Iniciar Sesion
-          </button>
-        </div>
-      </form>
-    </div>
+    <>
+      <div className={styles.contenedor}>
+        <h2 className={styles.titulo}>Iniciar Sesión</h2>
+        <form className={styles.formato} onSubmit={handleSubmitl}>
+          <div className={styles.fullentry}>
+            <label htmlFor="userN" className={styles.formlabel}>
+              Nombre de Usuario:
+            </label>
+            <input
+              type="text"
+              className={styles.formcontrol}
+              id="userN"
+              value={username}
+              placeholder="Username"
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+          </div>
+          <div className={styles.fullentry}>
+            <label htmlFor="inputPassword" className={styles.formlabel}>
+              Password
+            </label>
+            <input
+              type="password"
+              className={styles.formcontrol}
+              id="inputPassword"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+          </div>
+          <div className={styles.contenBoton}>
+            <button type="submit" className={styles.boton}>
+              Iniciar Sesion
+            </button>
+          </div>
+        </form>
+      </div>
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
+      )}
+    </>
   );
 };
 

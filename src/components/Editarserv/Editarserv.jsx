@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styles from "./Editarserv.module.css";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 
 export const Editarserv = () => {
   const {
@@ -12,6 +13,10 @@ export const Editarserv = () => {
     formState: { errors },
   } = useForm();
   const { userc } = useContext(UserContext);
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
   const History = useHistory();
   var tokenRegu = userc.tokenUsuario;
   var serv = userc.service;
@@ -41,15 +46,24 @@ export const Editarserv = () => {
         .then((response) => {
           console.log(response);
           if (!response.success) {
-            alert("Error de registro");
+            setEncabezadoModal("Error");
+            setTituloModal("Error de registro");
+            setMensajeModal(response.message);
+            setEstadoModal(true);
           } else {
-            alert("Registro Enviado");
+            setEncabezadoModal("Succesfull");
+            setTituloModal("Registro Enviado");
+            setMensajeModal(response.message);
+            setEstadoModal(true);
           }
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
-      alert("Error: " + e.message);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
     }
   };
 
@@ -797,6 +811,16 @@ export const Editarserv = () => {
           </footer>
         </form>
       </main>
+
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import styles from "./PerfildeUsuario.module.css";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 
 function PerfildeUsuario(props) {
   const { userc } = useContext(UserContext);
@@ -19,6 +20,10 @@ function PerfildeUsuario(props) {
   const [email, setEmail] = useState(correoU);
   const [username, setUsername] = useState(usernameU);
   const [rol, setRol] = useState(rolU);
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
 
   const handleSubmitr = async (e) => {
     e.preventDefault();
@@ -44,11 +49,18 @@ function PerfildeUsuario(props) {
           console.log(response);
           sessionStorage.setItem("nombreUsuario", response.data.nombre);
           sessionStorage.setItem("correoUsuario", response.data.email);
-          alert("Registro Actualizado");
+          setEncabezadoModal("Succesfull");
+          setTituloModal("Registro");
+          setMensajeModal(response.message);
+          setEstadoModal(true);
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal(e.message);
+      setMensajeModal(e);
+      setEstadoModal(true);
     }
   };
 
@@ -223,6 +235,16 @@ function PerfildeUsuario(props) {
             </div>
           </form>
         </div>
+      )}
+
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
       )}
     </>
   );

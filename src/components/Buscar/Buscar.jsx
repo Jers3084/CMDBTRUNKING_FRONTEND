@@ -2,11 +2,16 @@ import React, { useEffect, useState, useContext } from "react";
 import styles from "./Buscar.module.css";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 import { CSVLink } from "react-csv";
 
 export const Buscar = () => {
   const [servicios, setServicios] = useState([]);
   const { userc, setUserc } = useContext(UserContext);
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
   const tokendusuario = userc.tokenUsuario;
   const ruta = useHistory();
 
@@ -19,21 +24,30 @@ export const Buscar = () => {
   }, []);
 
   const obtenerServicios = async () => {
-    await fetch("http://localhost:9000/api/servicios", {
-      headers: { authorization: tokendusuario },
-    })
-      .then((resp) => resp.json())
-      .then((value) => {
-        if (value.success) {
-          setServicios(value.data);
-        }
-      });
+    try {
+      await fetch("http://localhost:9000/api/servicios", {
+        headers: { authorization: tokendusuario },
+      })
+        .then((resp) => resp.json())
+        .then((value) => {
+          if (value.success) {
+            setServicios(value.data);
+          }
+        });
+    } catch (e) {
+      console.log("hubo un error");
+      console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
+    }
   };
 
   const borrar = async (item) => {
     const idobjeto = { _id: item._id };
     try {
-      return fetch("http://localhost:9000/api/servicios/borrar", {
+      await fetch("http://localhost:9000/api/servicios/borrar", {
         method: "POST",
         body: JSON.stringify(idobjeto), // data {object}
         headers: {
@@ -44,11 +58,18 @@ export const Buscar = () => {
         .then((response) => response.json())
         .then((response) => {
           console.log(response);
-          alert("Registro Borrado");
+          setEncabezadoModal("Succesfull");
+          setTituloModal("Registro");
+          setMensajeModal(response.message);
+          setEstadoModal(true);
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
     }
   };
 
@@ -208,6 +229,16 @@ export const Buscar = () => {
           </tbody>
         </table>
       </div>
+
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
+      )}
     </>
   );
 };

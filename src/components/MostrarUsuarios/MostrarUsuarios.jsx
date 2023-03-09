@@ -2,11 +2,16 @@ import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import styles from "./MostrarUsuarios.module.css";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 
 export const MostrarUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const { userc } = useContext(UserContext);
   const tokendusuario = userc.tokenUsuario;
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
   const ruta = useHistory();
 
   useEffect(() => {
@@ -14,21 +19,30 @@ export const MostrarUsuarios = () => {
   }, [usuarios]);
 
   const obtenerUsuarios = async () => {
-    await fetch("http://localhost:9000/api/usuarios", {
-      headers: { authorization: tokendusuario },
-    })
-      .then((resp) => resp.json())
-      .then((value) => {
-        if (value.success) {
-          setUsuarios(value.data);
-        }
-      });
+    try {
+      await fetch("http://localhost:9000/api/usuarios", {
+        headers: { authorization: tokendusuario },
+      })
+        .then((resp) => resp.json())
+        .then((value) => {
+          if (value.success) {
+            setUsuarios(value.data);
+          }
+        });
+    } catch (e) {
+      console.log("hubo un error");
+      console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
+    }
   };
 
   const borrar = async (item) => {
     const idobjeto = { _id: item._id };
     try {
-      return fetch("http://localhost:9000/api/usuarios/borrar", {
+      await fetch("http://localhost:9000/api/usuarios/borrar", {
         method: "POST",
         body: JSON.stringify(idobjeto), // data {object}
         headers: {
@@ -38,11 +52,18 @@ export const MostrarUsuarios = () => {
       })
         .then((response) => response.json())
         .then((response) => {
-          alert("Registro Borrado");
+          setEncabezadoModal("Succesfull");
+          setTituloModal("Registro Borrado");
+          setMensajeModal(response.message);
+          setEstadoModal(true);
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal(e.message);
+      setMensajeModal(e);
+      setEstadoModal(true);
     }
   };
 
@@ -103,6 +124,15 @@ export const MostrarUsuarios = () => {
           </tbody>
         </table>
       </div>
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
+      )}
     </>
   );
 };

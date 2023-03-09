@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import styles from "./RegUsuarios.module.css";
 import { UserContext } from "../../Context/UserContext";
+import { Modal } from "../../components/Modal/Modal";
 
 export const RegUsuarios = () => {
   const { userc } = useContext(UserContext);
@@ -10,6 +11,11 @@ export const RegUsuarios = () => {
   const [username, setUsername] = useState("");
   const [rol, setRol] = useState("usuario");
   const [password, setPassword] = useState("");
+  const [estadoModal, setEstadoModal] = useState(false);
+  const [encabezadoModal, setEncabezadoModal] = useState("");
+  const [tituloModal, setTituloModal] = useState("");
+  const [mensajeModal, setMensajeModal] = useState("");
+
   var tokenRegu = userc.tokenUsuario;
   const ruta = useHistory();
 
@@ -22,7 +28,6 @@ export const RegUsuarios = () => {
     setUsername("");
     setRol("usuario");
     setPassword("");
-    alert("Registro Enviado");
   };
 
   const enviarRegistro = async () => {
@@ -37,10 +42,18 @@ export const RegUsuarios = () => {
         .then((response) => response.json())
         .then((response) => {
           console.log(response);
+          setEncabezadoModal("Succesfull");
+          setTituloModal("Registro");
+          setMensajeModal(response.message);
+          setEstadoModal(true);
         });
     } catch (e) {
       console.log("hubo un error");
       console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
     }
   };
 
@@ -156,6 +169,16 @@ export const RegUsuarios = () => {
           </div>
         </footer>
       </form>
+
+      {estadoModal && (
+        <Modal
+          estado={estadoModal}
+          cambiarestado={setEstadoModal}
+          encabezado={encabezadoModal}
+          titulo={tituloModal}
+          mensaje={mensajeModal}
+        />
+      )}
     </div>
   );
 };

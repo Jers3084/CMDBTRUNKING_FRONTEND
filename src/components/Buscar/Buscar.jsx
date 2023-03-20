@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import styles from "./Buscar.module.css";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
 import { CSVLink } from "react-csv";
@@ -13,19 +13,117 @@ export const Buscar = () => {
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
   const tokendusuario = userc.tokenUsuario;
-  const ruta = useHistory();
-
-  if (!userc.token) {
-    ruta.push("/login");
-  }
+  const navigate = useNavigate();
+  const [filtro, setFiltro] = useState("");
+  const [id, setId] = useState(0);
+  const [serie, setSerie] = useState("");
+  const [zona, setZona] = useState(null);
+  const [ficha, setFicha] = useState(0);
 
   useEffect(() => {
-    obtenerServicios();
-  }, []);
+    if (!userc.token) {
+      navigate("/login");
+    }
+    if (filtro !== "null") {
+      obtenerServicios();
+    }
+  }, [filtro]);
 
   const obtenerServicios = async () => {
     try {
-      await fetch("http://localhost:9000/api/servicios", {
+      await fetch("http://127.0.0.1:9000/api/servicios", {
+        headers: { authorization: tokendusuario },
+      })
+        .then((resp) => resp.json())
+        .then((value) => {
+          if (value.success) {
+            setServicios(value.data);
+          }
+        });
+    } catch (e) {
+      console.log("hubo un error");
+      console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
+    }
+  };
+
+  const obtenerServiciosxzona = async () => {
+    try {
+      const url = "http://127.0.0.1:9000/api/servicios/zona/" + zona;
+      console.log(url);
+      await fetch(url, {
+        headers: { authorization: tokendusuario },
+      })
+        .then((resp) => resp.json())
+        .then((value) => {
+          if (value.success) {
+            setServicios(value.data);
+          }
+        });
+    } catch (e) {
+      console.log("hubo un error");
+      console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
+    }
+  };
+
+  const obtenerServiciosxid = async () => {
+    try {
+      const url = "http://127.0.0.1:9000/api/servicios/id/" + id;
+      console.log(url);
+      await fetch(url, {
+        headers: { authorization: tokendusuario },
+      })
+        .then((resp) => resp.json())
+        .then((value) => {
+          if (value.success) {
+            setServicios(value.data);
+          }
+        });
+    } catch (e) {
+      console.log("hubo un error");
+      console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
+    }
+  };
+
+  const obtenerServiciosxficha = async () => {
+    try {
+      const url = "http://127.0.0.1:9000/api/servicios/ficha/" + ficha;
+      console.log(url);
+      await fetch(url, {
+        headers: { authorization: tokendusuario },
+      })
+        .then((resp) => resp.json())
+        .then((value) => {
+          if (value.success) {
+            setServicios(value.data);
+          }
+        });
+    } catch (e) {
+      console.log("hubo un error");
+      console.log(e);
+      setEncabezadoModal("Error");
+      setTituloModal("hubo un error");
+      setMensajeModal(e.message);
+      setEstadoModal(true);
+    }
+  };
+
+  const obtenerServiciosxserie = async () => {
+    try {
+      const url = "http://127.0.0.1:9000/api/servicios/serie/" + serie;
+      console.log(url);
+      await fetch(url, {
         headers: { authorization: tokendusuario },
       })
         .then((resp) => resp.json())
@@ -47,7 +145,7 @@ export const Buscar = () => {
   const borrar = async (item) => {
     const idobjeto = { _id: item._id };
     try {
-      await fetch("http://localhost:9000/api/servicios/borrar", {
+      await fetch("http://127.0.0.1:9000/api/servicios/borrar", {
         method: "POST",
         body: JSON.stringify(idobjeto), // data {object}
         headers: {
@@ -75,7 +173,84 @@ export const Buscar = () => {
 
   const actualizar = (reg) => {
     userc.service = reg;
-    ruta.push("/editarserv");
+    navigate("/editarserv");
+  };
+
+  const borrarvarsearch = (valor) => {
+    switch (valor) {
+      case "ZONA":
+        setId(0);
+        setFicha(0);
+        setSerie("");
+        break;
+
+      case "ID":
+        setZona(null);
+        setFicha(0);
+        setSerie("");
+        break;
+
+      case "SERIE":
+        setZona(null);
+        setId(0);
+        setFicha(0);
+        break;
+
+      case "FICHA":
+        setZona(null);
+        setId(0);
+        setSerie("");
+        break;
+
+      default:
+        setZona(null);
+        setId(0);
+        setSerie("");
+        setFicha(0);
+        break;
+    }
+  };
+
+  const applyfilter = () => {
+    switch (filtro) {
+      case "ZONA":
+        if (zona != null) {
+          obtenerServiciosxzona();
+        }
+        break;
+
+      case "ID":
+        if (id !== 0) {
+          obtenerServiciosxid();
+        }
+        break;
+
+      case "FICHA":
+        if (ficha !== 0) {
+          obtenerServiciosxficha();
+        }
+        break;
+
+      case "SERIE":
+        if (serie !== "") {
+          obtenerServiciosxserie();
+        }
+        break;
+
+      default:
+        setFiltro("");
+        break;
+    }
+  };
+
+  const deletefilter = () => {
+    var slcchange = document.getElementById("filtro");
+    slcchange.value = "";
+    setFiltro("");
+    setZona(null);
+    setId(0);
+    setSerie("");
+    setFicha(0);
   };
 
   return (
@@ -86,8 +261,127 @@ export const Buscar = () => {
           <CSVLink data={servicios} filename={"listdata.csv"}>
             <button className={styles.boton}>Exportar a CVS</button>
           </CSVLink>
-        </header>
 
+          <div className={styles.searchmodal}>
+            <div className={styles.inputgroup}>
+              <label htmlFor="filtro" className={styles.etiquetadeentrada}>
+                Filtro X
+              </label>
+              <select
+                className={styles.campodeentrada}
+                id="filtro"
+                name="filtro"
+                defaultValue="---"
+                onChange={(e) => {
+                  setFiltro(e.target.value);
+                  borrarvarsearch(e.target.value);
+                }}
+              >
+                <option value="">---</option>
+                <option value="ZONA">ZONA</option>
+                <option value="ID">ID</option>
+                <option value="SERIE">SERIE</option>
+                <option value="FICHA">FICHA</option>
+              </select>
+            </div>
+
+            {filtro === "" && <div className={styles.inputgroup}></div>}
+
+            {filtro === "ID" && (
+              <div className={styles.inputgroup}>
+                <label htmlFor="inputId" className={styles.etiquetadeentrada}>
+                  Id:
+                </label>
+                <input
+                  type="number"
+                  className={styles.campodeentrada}
+                  id="inputId"
+                  required
+                  value={id}
+                  onChange={(e) => {
+                    setId(e.target.value);
+                  }}
+                />
+              </div>
+            )}
+
+            {filtro === "SERIE" && (
+              <div className={styles.inputgroup}>
+                <label
+                  htmlFor="inputSerie"
+                  className={styles.etiquetadeentrada}
+                >
+                  Serie:
+                </label>
+                <input
+                  type="text"
+                  className={styles.campodeentrada}
+                  id="inputSerie"
+                  required
+                  value={serie}
+                  onChange={(e) => {
+                    setSerie(e.target.value);
+                  }}
+                />
+              </div>
+            )}
+
+            {filtro === "FICHA" && (
+              <div className={styles.inputgroup}>
+                <label
+                  htmlFor="inputFicha"
+                  className={styles.etiquetadeentrada}
+                >
+                  Ficha:
+                </label>
+                <input
+                  type="number"
+                  className={styles.campodeentrada}
+                  id="inputFicha"
+                  required
+                  value={ficha}
+                  onChange={(e) => {
+                    setFicha(e.target.value);
+                  }}
+                />
+              </div>
+            )}
+
+            {filtro === "ZONA" && (
+              <div className={styles.inputgroup}>
+                <label
+                  htmlFor="zonausuario"
+                  className={styles.etiquetadeentrada}
+                >
+                  Zona U:
+                </label>
+                <select
+                  className={styles.campodeentrada}
+                  id="zonausuario"
+                  name="zonausuario"
+                  defaultValue="SUR"
+                  onChange={(e) => {
+                    setZona(e.target.value);
+                  }}
+                >
+                  <option>---</option>
+                  <option value="sur">SUR</option>
+                  <option value="centro">CENTRO</option>
+                  <option value="pacifico">PACIFICO</option>
+                  <option value="oriente">ORIENTE</option>
+                  <option value="marina">MARINA</option>
+                </select>
+              </div>
+            )}
+            <button className={styles.boton} onClick={applyfilter}>
+              Aplicar Filtro
+            </button>
+
+            <button className={styles.boton} onClick={deletefilter}>
+              Borrar Filtro
+            </button>
+          </div>
+        </header>
         <table className={styles.tabla}>
           <thead>
             <tr>

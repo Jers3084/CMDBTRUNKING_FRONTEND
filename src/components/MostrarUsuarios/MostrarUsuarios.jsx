@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./MostrarUsuarios.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
@@ -12,7 +12,7 @@ export const MostrarUsuarios = () => {
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
-  const ruta = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     obtenerUsuarios();
@@ -20,7 +20,7 @@ export const MostrarUsuarios = () => {
 
   const obtenerUsuarios = async () => {
     try {
-      await fetch("http://localhost:9000/api/usuarios", {
+      await fetch("http://127.0.0.1:9000/api/usuarios", {
         headers: { authorization: tokendusuario },
       })
         .then((resp) => resp.json())
@@ -42,7 +42,7 @@ export const MostrarUsuarios = () => {
   const borrar = async (item) => {
     const idobjeto = { _id: item._id };
     try {
-      await fetch("http://localhost:9000/api/usuarios/borrar", {
+      await fetch("http://127.0.0.1:9000/api/usuarios/borrar", {
         method: "POST",
         body: JSON.stringify(idobjeto), // data {object}
         headers: {
@@ -73,7 +73,7 @@ export const MostrarUsuarios = () => {
     userc.correo = reg.email;
     userc.alias = reg.username;
     userc.tipousuario = reg.rol;
-    ruta.push("/editarusuario");
+    navigate("/editarusuario");
   };
 
   return (

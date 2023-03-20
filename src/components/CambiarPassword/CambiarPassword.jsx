@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./CambiarPassword.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
+import imagen from "./img/declinereject.svg";
 
 const CambiarPassword = (props) => {
+  const navigate = useNavigate();
   const { userc } = useContext(UserContext);
   var id = userc.identificador;
   var nombreU = sessionStorage.getItem("nombreUsuario");
@@ -22,7 +24,7 @@ const CambiarPassword = (props) => {
     e.preventDefault();
     if (password === vpassword) {
       await updatePassword();
-      props.history.push("/");
+      navigate("/");
     } else {
       alert("Los Passwords introducidos no son iguales");
       setEncabezadoModal("Error");
@@ -34,7 +36,7 @@ const CambiarPassword = (props) => {
 
   const updatePassword = async () => {
     try {
-      return fetch("http://localhost:9000/api/usuarios/actpassword", {
+      return fetch("http://127.0.0.1:9000/api/usuarios/actpassword", {
         method: "POST",
         body: JSON.stringify({ id, password }), // data {object}
         headers: {
@@ -60,7 +62,7 @@ const CambiarPassword = (props) => {
     }
   };
   const saliraperfil = () => {
-    props.history.push("/perfildeusuario");
+    navigate("/perfildeusuario");
   };
 
   return (
@@ -68,6 +70,13 @@ const CambiarPassword = (props) => {
       <div className={styles.contenedor}>
         <h2 className={styles.titulo}>Cambiar Password</h2>
         <form className={styles.formato} onSubmit={handleSubmitr}>
+          <button
+            className={styles.cerrarModal}
+            onClick={() => navigate("/perfildeusuario")}
+          >
+            <img src={imagen} alt="" className={styles.imagen} />
+          </button>
+
           <div className={styles.fullentry}>
             <label htmlFor="inputNombre" className={styles.formlabel}>
               Nombre
@@ -155,4 +164,4 @@ const CambiarPassword = (props) => {
   );
 };
 
-export default withRouter(CambiarPassword);
+export default CambiarPassword;

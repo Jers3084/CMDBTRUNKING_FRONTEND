@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
+import imagen from "./img/declinereject.svg";
 
 const Login = (props) => {
+  const navigate = useNavigate();
   const { userc, setUserc } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +24,7 @@ const Login = (props) => {
 
   const enviarLogin = async () => {
     try {
-      await fetch("http://localhost:9000/api/usuarios/login", {
+      await fetch("http://127.0.0.1:9000/api/usuarios/login", {
         method: "POST",
         body: JSON.stringify({ username, password }), // data can be `string` or {object}!
         headers: {
@@ -47,7 +49,7 @@ const Login = (props) => {
             setUserc({ ...userc });
             setUsername("");
             setPassword("");
-            props.history.push("/");
+            navigate("/");
           } else {
             setEncabezadoModal("Error");
             setTituloModal("Login");
@@ -70,6 +72,9 @@ const Login = (props) => {
       <div className={styles.contenedor}>
         <h2 className={styles.titulo}>Iniciar Sesión</h2>
         <form className={styles.formato} onSubmit={handleSubmitl}>
+          <button className={styles.cerrarModal} onClick={() => navigate("/")}>
+            <img src={imagen} alt="" className={styles.imagen} />
+          </button>
           <div className={styles.fullentry}>
             <label htmlFor="userN" className={styles.formlabel}>
               Nombre de Usuario:
@@ -120,4 +125,4 @@ const Login = (props) => {
   );
 };
 
-export default withRouter(Login);
+export default Login;

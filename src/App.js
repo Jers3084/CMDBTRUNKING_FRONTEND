@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Buscar } from "./components/Buscar/Buscar";
 import { RegistrarServ } from "./components/RegistrarServ/RegistrarServ";
@@ -35,41 +35,19 @@ function App() {
         <BrowserRouter>
           <Navbar />
           <div className="cuerpo">
-            <Switch>
-              <Route path="/" exact>
-                <Home />
-              </Route>
-              <Route path="/registrarserv">
-                <RegistrarServ />
-              </Route>
-              <Route path="/buscar">
-                <Buscar />
-              </Route>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/perfildeusuario">
-                <PerfildeUsuario />
-              </Route>
-              <Route path="/cambiarpassword">
-                <CambiarPassword />
-              </Route>
-              <Route path="/logout">
-                <Logout />
-              </Route>
-              <Route path="/regusuarios">
-                <RegUsuarios />
-              </Route>
-              <Route path="/mostrarusuarios">
-                <MostrarUsuarios />
-              </Route>
-              <Route path="/editarusuario">
-                <EditarUsuario />
-              </Route>
-              <Route path="/editarserv">
-                <Editarserv />
-              </Route>
-            </Switch>
+            <Routes>
+              <Route path="/" exact element={<Home />} />
+              <Route path="/registrarserv" element={<RegistrarServ />} />
+              <Route path="/buscar" element={<Buscar />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/perfildeusuario" element={<PerfildeUsuario />} />
+              <Route path="/cambiarpassword" element={<CambiarPassword />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/regusuarios" element={<RegUsuarios />} />
+              <Route path="/mostrarusuarios" element={<MostrarUsuarios />} />
+              <Route path="/editarusuario" element={<EditarUsuario />} />
+              <Route path="/editarserv" element={<Editarserv />}></Route>
+            </Routes>
           </div>
         </BrowserRouter>
       </UserContext.Provider>

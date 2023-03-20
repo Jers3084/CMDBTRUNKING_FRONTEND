@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./EditarUsuario.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
@@ -16,7 +16,7 @@ export const EditarUsuario = () => {
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
-  const ruta = useHistory();
+  const navigate = useNavigate();
   var tokenRegu = userc.tokenUsuario;
 
   const handleSubmitr = async (e) => {
@@ -27,7 +27,7 @@ export const EditarUsuario = () => {
 
   const actualizarRegistro = async () => {
     try {
-      return fetch("http://localhost:9000/api/usuarios//actualizar", {
+      return fetch("http://127.0.0.1:9000/api/usuarios//actualizar", {
         method: "POST",
         body: JSON.stringify({ id, nombre, email, rol }), // data {object}
         headers: {
@@ -60,7 +60,7 @@ export const EditarUsuario = () => {
   };
 
   const actualizarPassword = () => {
-    ruta.push("/cambiarpassword");
+    navigate("/cambiarpassword");
   };
 
   const cancel = () => {
@@ -69,7 +69,7 @@ export const EditarUsuario = () => {
     setUsername("");
     setRol("");
     setPassword("");
-    ruta.push("/mostrarusuarios");
+    navigate("/mostrarusuarios");
   };
 
   return (

@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import styles from "./Navbar.module.css";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "./img/logo.jpg";
 import { UserContext } from "../../Context/UserContext";
 
 export const Navbar = () => {
-  const { userc, setUserc } = useContext(UserContext);
-  const ruta = useHistory();
+  const { userc } = useContext(UserContext);
   var usuario = sessionStorage.getItem("cuentaUsuario");
   var rolusuario = sessionStorage.getItem("rolUsuario");
 
@@ -14,21 +13,6 @@ export const Navbar = () => {
     var mostrar = document.getElementById("regusu");
     mostrar.style.visibility = "visible";
   }
-
-  const logout = () => {
-    sessionStorage.setItem("tokenUsuario", null);
-    sessionStorage.setItem("cuentaUsuario", null);
-    sessionStorage.setItem("nombreUsuario", null);
-    sessionStorage.setItem("correoUsuario", null);
-    sessionStorage.setItem("idUsuario", null);
-    sessionStorage.setItem("rolUsuario", null);
-
-    var mostrar = document.getElementById("regusu");
-    mostrar.style.visibility = "hidden";
-    userc.token = false;
-    setUserc({ ...userc });
-    ruta.push("/");
-  };
 
   return (
     <div>
@@ -46,15 +30,37 @@ export const Navbar = () => {
 
         <ul id="list" className={styles.navbar_list}>
           <li className={styles.navbar_item1}>
-            <Link className={styles.navbar_font} to="/registrarserv">
-              Registrar
-            </Link>
+            {userc.token ? (
+              <Link className={styles.navbar_font} to="/registrarserv">
+                Registrar
+              </Link>
+            ) : (
+              <Link
+                style={{ pointerEvents: "none", color: "#3d6bb3" }}
+                className={styles.navbar_font}
+                to="/registrarserv"
+                onClick={(event) => event.preventDefault()}
+              >
+                Registrar
+              </Link>
+            )}
           </li>
 
           <li className={styles.navbar_item2}>
-            <Link className={styles.navbar_font} to="/buscar">
-              Buscar
-            </Link>
+            {userc.token ? (
+              <Link className={styles.navbar_font} to="/buscar">
+                Buscar
+              </Link>
+            ) : (
+              <Link
+                style={{ pointerEvents: "none", color: "#3d6bb3" }}
+                className={styles.navbar_font}
+                to="/buscar"
+                onClick={(event) => event.preventDefault()}
+              >
+                Buscar
+              </Link>
+            )}
           </li>
 
           <li className={styles.navbar_item3}>
@@ -74,11 +80,7 @@ export const Navbar = () => {
                       </Link>
                     </li>
                     <li className={styles.li_dropdown}>
-                      <Link
-                        to="#"
-                        className={styles.navbar_font}
-                        onClick={logout}
-                      >
+                      <Link to="/logout" className={styles.navbar_font}>
                         Cerrar Sesion
                       </Link>
                     </li>

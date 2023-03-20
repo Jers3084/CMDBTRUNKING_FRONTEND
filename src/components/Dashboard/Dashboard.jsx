@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Dashboard = (props) => {
+  const navigate = useNavigate();
   useEffect(() => {
     const infoUser = { nombre: "" };
 
     if (infoUser === null) {
-      props.history.push("/Login");
+      navigate("/Login");
     }
   });
 
   return <div>Dashboard</div>;
 };
 
-export default withRouter(Dashboard);
+export default Dashboard;

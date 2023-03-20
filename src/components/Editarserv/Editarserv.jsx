@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./Editarserv.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
@@ -17,12 +17,12 @@ export const Editarserv = () => {
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
-  const History = useHistory();
+  const navigate = useNavigate();
   var tokenRegu = userc.tokenUsuario;
   var serv = userc.service;
 
   if (!userc.token) {
-    History.push("/login");
+    navigate("/login");
   }
 
   const onSubmit = (data) => {
@@ -34,7 +34,7 @@ export const Editarserv = () => {
   const actualizarRegistro = async (objeto) => {
     //Envia el formulario
     try {
-      await fetch("http://localhost:9000/api/servicios/actualizar", {
+      await fetch("http://127.0.0.1:9000/api/servicios/actualizar", {
         method: "POST",
         body: JSON.stringify(objeto), // data {object}
         headers: {
@@ -69,7 +69,7 @@ export const Editarserv = () => {
 
   const cancel = () => {
     //Salir del formulario
-    History.push("/buscar");
+    navigate("/buscar");
   };
 
   return (

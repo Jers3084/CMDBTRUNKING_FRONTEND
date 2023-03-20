@@ -1,27 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./RegistrarServ.module.css";
-import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
 
-export const RegistrarServ = (props) => {
+export const RegistrarServ = () => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-  const { userc } = useContext(UserContext);
-  const History = useHistory();
   const [estadoModal, setEstadoModal] = useState(false);
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
-
-  if (!userc.token) {
-    History.push("/login");
-  }
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     enviarRegistro(data);
@@ -31,7 +25,7 @@ export const RegistrarServ = (props) => {
   const enviarRegistro = async (objeto) => {
     //Envia el formulario
     try {
-      await fetch("http://localhost:9000/api/servicios/", {
+      await fetch("http://127.0.0.1:9000/api/servicios/", {
         method: "POST",
         body: JSON.stringify(objeto), // data {object}
         headers: {
@@ -65,7 +59,7 @@ export const RegistrarServ = (props) => {
 
   const cancel = () => {
     //Salir del formulario
-    History.push("/");
+    navigate("/");
   };
 
   const borrarformulario = () => {
@@ -74,7 +68,7 @@ export const RegistrarServ = (props) => {
   };
 
   return (
-    <div>
+    <>
       <main>
         <form
           className={styles.formato}
@@ -321,9 +315,9 @@ export const RegistrarServ = (props) => {
               >
                 <option value="sur">SUR</option>
                 <option value="centro">CENTRO</option>
-                <option value="centro norte">CENTRO NTE</option>
-                <option value="golfo">GOLFO</option>
-                <option value="golfo norte">GOLFO NTE</option>
+                <option value="pacifico">PACIFICO</option>
+                <option value="oriente">ORIENTE</option>
+                <option value="marina">MARINA</option>
               </select>
             </div>
 
@@ -416,7 +410,10 @@ export const RegistrarServ = (props) => {
                   id="telefono"
                   name="telefono"
                   placeholder="Telefono"
-                  {...register("telefono", { maxLength: 10, pattern: [0 - 9] })}
+                  {...register("telefono", {
+                    maxLength: 10,
+                    pattern: [0 - 9],
+                  })}
                 />
                 {errors.telefono?.type === "maxlength" && (
                   <p>La longitud maxima es 10 num</p>
@@ -708,9 +705,9 @@ export const RegistrarServ = (props) => {
               >
                 <option value="sur">SUR</option>
                 <option value="centro">CENTRO</option>
-                <option value="centro norte">CENTRO NTE</option>
-                <option value="golfo">GOLFO</option>
-                <option value="golfo norte">GOLFO NTE</option>
+                <option value="pacifico">PACIFICO</option>
+                <option value="oriente">ORIENTE</option>
+                <option value="marina">MARINA</option>
               </select>
             </div>
 
@@ -795,6 +792,7 @@ export const RegistrarServ = (props) => {
           </footer>
         </form>
       </main>
+
       {estadoModal && (
         <Modal
           estado={estadoModal}
@@ -804,7 +802,7 @@ export const RegistrarServ = (props) => {
           mensaje={mensajeModal}
         />
       )}
-    </div>
+    </>
   );
 };
 export default RegistrarServ;

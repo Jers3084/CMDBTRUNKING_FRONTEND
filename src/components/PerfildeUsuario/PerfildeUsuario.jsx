@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./PerfildeUsuario.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
+import imagen from "./img/declinereject.svg";
 
 function PerfildeUsuario(props) {
+  const navigate = useNavigate();
   const { userc } = useContext(UserContext);
   var id = userc.idUsuario;
   userc.identificador = id;
@@ -36,7 +38,7 @@ function PerfildeUsuario(props) {
 
   const updateRegistro = async () => {
     try {
-      return fetch("http://localhost:9000/api/usuarios/actualizar", {
+      return fetch("http://127.0.0.1:9000/api/usuarios/actualizar", {
         method: "POST",
         body: JSON.stringify({ id, nombre, email }),
         headers: {
@@ -73,11 +75,11 @@ function PerfildeUsuario(props) {
   };
 
   const actualizarPassword = () => {
-    props.history.push("/cambiarpassword");
+    navigate("/cambiarpassword");
   };
 
   const salir = () => {
-    props.history.push("/");
+    navigate("/");
   };
 
   return (
@@ -86,6 +88,13 @@ function PerfildeUsuario(props) {
         <div className={styles.contenedor}>
           <h2 className={styles.titulo}>Perfil del Usuario</h2>
           <form className={styles.formato}>
+            <button
+              className={styles.cerrarModal}
+              onClick={() => navigate("/")}
+            >
+              <img src={imagen} alt="" className={styles.imagen} />
+            </button>
+
             <div className={styles.fullentry}>
               <label htmlFor="inputNombre" className={styles.formlabel}>
                 Nombre
@@ -171,7 +180,6 @@ function PerfildeUsuario(props) {
                 }}
               />
             </div>
-
             <div className={styles.fullentry}>
               <label htmlFor="inputEmail" className={styles.formlabel}>
                 E-mail
@@ -187,7 +195,6 @@ function PerfildeUsuario(props) {
                 }}
               />
             </div>
-
             <div className={styles.fullentry}>
               <label htmlFor="inputUsername" className={styles.formlabel}>
                 Username
@@ -202,7 +209,6 @@ function PerfildeUsuario(props) {
                 value={username}
               />
             </div>
-
             <div className={styles.fullentry}>
               <label htmlFor="inputUseRol" className={styles.formlabel}>
                 Rol
@@ -215,14 +221,13 @@ function PerfildeUsuario(props) {
                 value={rol}
               />
             </div>
-
             <div className={styles.contenBoton}>
-              <button className={styles.boton} type="submit">
-                Actualizar
-              </button>
-
               <button className={styles.boton} type="button" onClick={cancel}>
                 Cancelar
+              </button>
+
+              <button className={styles.boton} type="submit">
+                Actualizar
               </button>
 
               <button
@@ -250,4 +255,4 @@ function PerfildeUsuario(props) {
   );
 }
 
-export default withRouter(PerfildeUsuario);
+export default PerfildeUsuario;

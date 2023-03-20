@@ -21,8 +21,9 @@
 }
 
 .nav_style {
-  width: 1280px; /*1280px */
+  max-width: 1280px; /*1280px */
   height: 70px;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

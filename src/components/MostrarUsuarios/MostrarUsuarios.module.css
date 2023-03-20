@@ -20,7 +20,7 @@
 }
 
 .contenedor {
-  width: 100%;
+  max-width: 1280px; /*1280px */
   height: 88vh;
   margin-right: auto;
   margin-left: auto;
@@ -36,18 +36,22 @@
 }
 
 .tabla {
+  display: block;
+  overflow: auto;
   width: 80%;
-  height: 100px;
-  margin-right: auto;
-  margin-left: auto;
+  height: auto;
+  min-width: 450px;
+  margin: 0 auto;
+  /*margin-right: auto;
+  margin-left: auto;*/
   align-items: center;
   text-align: center;
   background-color: var(--Background);
   border: var(--Azul1) 2px solid;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 1em;
   font-family: sans-serif;
-  min-width: 450px;
+
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 

@@ -20,8 +20,8 @@
 }
 
 .contenedor {
-  width: auto;
-  height: 88vh;
+  max-width: 1280px; /*1280px */
+  min-height: 88vh;
   margin: 0 auto;
   align-content: center;
   align-items: center;
@@ -30,7 +30,7 @@
 }
 
 .encabezado {
-  width: 400px;
+  width: 100vw;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
@@ -45,15 +45,16 @@
 }
 
 .tabla {
-  width: 80%;
-  height: 100px;
+  display: block;
+  overflow: auto;
+  width: 98%;
   margin-right: auto;
   margin-left: auto;
   align-items: center;
   text-align: center;
   background-color: var(--Background);
   border: var(--Azul1) 2px solid;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 10px;
   font-family: sans-serif;
   min-width: 450px;
@@ -98,4 +99,53 @@
   background-color: var(--Azul1);
   transition: all 0.5s;
   transform: scale(1.09);
+}
+
+.boton:active {
+  background-color: var(--Negro);
+}
+
+.searchmodal {
+  margin: 0 auto;
+  align-items: center;
+  width: 880px;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid var(--Azul1);
+  border-radius: 5px;
+}
+
+.inputgroup {
+  width: 270px;
+  height: 50px;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: left;
+}
+
+.etiquetadeentrada {
+  padding: 5px;
+  min-width: 80px;
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.campodeentrada {
+  min-width: 200px;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: Negro;
+  background-color: beige;
+  border-radius: 0.25rem;
+  border: 2px solido --Negro;
+  background-clip: padding-box;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }

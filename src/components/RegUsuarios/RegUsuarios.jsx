@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./RegUsuarios.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
+import imagen from "./img/declinereject.svg";
 
 export const RegUsuarios = () => {
   const { userc } = useContext(UserContext);
@@ -17,7 +18,7 @@ export const RegUsuarios = () => {
   const [mensajeModal, setMensajeModal] = useState("");
 
   var tokenRegu = userc.tokenUsuario;
-  const ruta = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmitr = async (e) => {
     e.preventDefault();
@@ -63,13 +64,16 @@ export const RegUsuarios = () => {
     setUsername("");
     setRol("");
     setPassword("");
-    ruta.push("/");
+    navigate("/");
   };
 
   return (
     <div className={styles.contenedor}>
       <h2 className={styles.titulo}>Registro</h2>
       <form className={styles.formato} onSubmit={handleSubmitr}>
+        <button className={styles.cerrarModal} onClick={salir}>
+          <img src={imagen} alt="" className={styles.imagen} />
+        </button>
         <div className={styles.fullentry}>
           <label htmlFor="inputNombre" className={styles.formlabel}>
             Nombre

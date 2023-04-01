@@ -13,6 +13,7 @@ export const MostrarUsuarios = () => {
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
   const navigate = useNavigate();
+  const baseURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     obtenerUsuarios();
@@ -20,7 +21,7 @@ export const MostrarUsuarios = () => {
 
   const obtenerUsuarios = async () => {
     try {
-      await fetch("http://127.0.0.1:9000/api/usuarios", {
+      await fetch(baseURL + "/usuarios", {
         headers: { authorization: tokendusuario },
       })
         .then((resp) => resp.json())
@@ -42,7 +43,7 @@ export const MostrarUsuarios = () => {
   const borrar = async (item) => {
     const idobjeto = { _id: item._id };
     try {
-      await fetch("http://127.0.0.1:9000/api/usuarios/borrar", {
+      await fetch(baseURL + "/usuarios/borrar", {
         method: "POST",
         body: JSON.stringify(idobjeto), // data {object}
         headers: {

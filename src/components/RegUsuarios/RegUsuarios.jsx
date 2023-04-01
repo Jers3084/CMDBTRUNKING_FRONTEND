@@ -16,6 +16,7 @@ export const RegUsuarios = () => {
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
+  const baseURL = process.env.REACT_APP_API_URL;
 
   var tokenRegu = userc.tokenUsuario;
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export const RegUsuarios = () => {
 
   const enviarRegistro = async () => {
     try {
-      return fetch("http://localhost:9000/api/usuarios", {
+      return fetch(baseURL + "/usuarios", {
         method: "POST",
         body: JSON.stringify({ nombre, email, username, password, rol }), // data {object}
         headers: {

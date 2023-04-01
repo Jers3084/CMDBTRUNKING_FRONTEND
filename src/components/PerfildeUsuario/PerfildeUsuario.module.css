@@ -20,9 +20,10 @@
 }
 
 .contenedor {
-  /*padding-top: 70px;*/
-  max-width: 1280px; /*1280px */
-  height: 88vh;
+  width: 100vw;
+  max-width: 1920px; /*se limita a un maximo de 1920px de ancho*/
+  height: calc(100vh - 70px);
+  max-height: 1080px; /*se limita a un maximo de 1920px de ancho*/
   margin-right: auto;
   margin-left: auto;
   align-items: center;

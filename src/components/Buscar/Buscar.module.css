@@ -20,8 +20,10 @@
 }
 
 .contenedor {
-  max-width: 1280px; /*1280px */
-  min-height: 88vh;
+  width: 100vw;
+  max-width: 1920px; /*se limita a un maximo de 1920px de ancho*/
+  height: calc(100vh - 70px);
+  max-height: 1080px; /*se limita a un maximo de 1080px de alto*/
   margin: 0 auto;
   align-content: center;
   align-items: center;
@@ -30,7 +32,7 @@
 }
 
 .encabezado {
-  width: 100vw;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
@@ -48,6 +50,8 @@
   display: block;
   overflow: auto;
   width: 98%;
+  height: 98%;
+  max-height: 350px;
   margin-right: auto;
   margin-left: auto;
   align-items: center;
@@ -108,7 +112,7 @@
 .searchmodal {
   margin: 0 auto;
   align-items: center;
-  width: 880px;
+  width: 850px;
   height: 50px;
   display: flex;
   justify-content: space-around;

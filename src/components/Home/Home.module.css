@@ -19,11 +19,19 @@
   --Blanco: #f5f5f5;
 }
 
-.seccion1 {
-  padding-top: 10px;
-  max-width: 1280px; /*1280px */
+.bodyhome {
+  width: 100vw;
+  max-width: 1920px; /*se limita a un maximo de 1920px de ancho*/
+  height: calc(100vh - 70px);
+  max-height: 1080px; /*se limita a un maximo de 1920px de ancho*/
   margin: 0 auto;
-  min-height: 85vh;
+  text-align: center;
+}
+.seccion1 {
+  width: 100%;
+  height: 90%;
+  padding-top: 10px;
+  margin: 0 auto;
   text-align: center;
   color: var(--Azul1);
   background-color: var(--Azul4);
@@ -34,6 +42,7 @@
 }
 
 .piedepagina {
-  max-width: 1280px; /*1280px */
+  width: 100%;
+  height: 10%;
   background-color: var(--Azul4);
 }

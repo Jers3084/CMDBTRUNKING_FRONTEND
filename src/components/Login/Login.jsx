@@ -14,6 +14,7 @@ const Login = (props) => {
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const handleSubmitl = async (e) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ const Login = (props) => {
 
   const enviarLogin = async () => {
     try {
-      await fetch("http://127.0.0.1:9000/api/usuarios/login", {
+      await fetch(baseURL + "/usuarios/login", {
         method: "POST",
         body: JSON.stringify({ username, password }), // data can be `string` or {object}!
         headers: {

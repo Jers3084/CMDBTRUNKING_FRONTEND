@@ -18,16 +18,16 @@ export const EditarUsuario = () => {
   const [mensajeModal, setMensajeModal] = useState("");
   const navigate = useNavigate();
   var tokenRegu = userc.tokenUsuario;
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const handleSubmitr = async (e) => {
     e.preventDefault();
-
     await actualizarRegistro();
   };
 
   const actualizarRegistro = async () => {
     try {
-      return fetch("http://127.0.0.1:9000/api/usuarios//actualizar", {
+      return fetch(baseURL + "/usuarios//actualizar", {
         method: "POST",
         body: JSON.stringify({ id, nombre, email, rol }), // data {object}
         headers: {

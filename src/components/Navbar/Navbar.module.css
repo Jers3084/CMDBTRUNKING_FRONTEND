@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
 
@@ -21,7 +21,8 @@
 }
 
 .nav_style {
-  max-width: 1280px; /*1280px */
+  width: 100vw;
+  max-width: 1920px; /*se limita a un maximo de 1920px de ancho*/
   height: 70px;
   margin: 0 auto;
   display: flex;
@@ -29,7 +30,6 @@
   justify-content: flex-start;
   align-items: center;
   background-color: var(--Azul6);
-  border: #cc3300 1px solid;
 }
 
 .navbar_list {

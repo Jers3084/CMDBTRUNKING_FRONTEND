@@ -19,15 +19,11 @@
   --Blanco: #f5f5f5;
 }
 
-main {
-  max-width: 1280px; /*1280px */
-  height: 100%;
-  padding: 5px;
-  margin-right: auto;
-  margin-left: auto;
-  align-items: center;
+.formato {
+  width: 100vw;
+  max-width: 1920px; /*se limita a un maximo de 1920px de ancho*/
+  margin: 0 auto;
   text-align: left;
-  font-family: "Times New Roman", Times, serif;
   background-color: var(--Azul4);
 }
 
@@ -39,7 +35,7 @@ main {
 }
 
 .tituloFormato {
-  margin-top: 5px;
+  padding-top: 5px;
   color: var(--Blanco);
   background-color: var(--Azul6);
   text-align: center;
@@ -48,6 +44,7 @@ main {
 .formRadio,
 .formServicio,
 .formAdmonServ {
+  width: 100%;
   padding: 5px 10px;
   display: flex;
   flex-direction: row;
@@ -55,16 +52,30 @@ main {
   justify-content: space-between;
   align-items: center;
   color: var(--Azul1);
+  background-color: var(--Azul4);
+}
+
+.formUsuario {
+  width: 100%;
+  padding: 5px 10px;
+  display: block;
+}
+
+/* Conjunto de elementos etiqueta-entrada*/
+.gpoentrada {
+  padding-right: 5px;
+  display: block;
 }
 
 .Datosdeusuario {
-  padding: 0px 0px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   color: var(--Azul1);
+  background-color: var(--Azul4);
 }
 
 .subdatosdeusuario {
@@ -89,11 +100,6 @@ main {
   color: var(--Azul1);
 }
 
-.formUsuario {
-  padding: 10px;
-  display: block;
-}
-
 .seccfacilidades {
   width: 89%;
 }
@@ -110,11 +116,6 @@ main {
 
 .labelForm {
   color: var(--Azul1);
-}
-
-.gpoentrada {
-  padding: 3px;
-  display: block;
 }
 
 .entradaselector {
@@ -304,60 +305,10 @@ p {
 }
 
 footer {
-  margin-top: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-}
-
-.criteriosdebusqueda {
-  width: 100%;
-  height: 30vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid var(--Azul6);
-}
-
-.elementoabuscar {
-  width: 33%;
-  border: 1px solid var(--Azul6);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.condiciondebusqueda {
-  width: 33%;
-  border: 1px solid var(--Azul6);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.valordebusqueda {
-  width: 33%;
-  border: 1px solid var(--Azul6);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.formselect {
-  display: block;
-  width: 250px;
-  padding: 0.37rem 0.37rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.3;
-  background-color: var(--Blanco);
-  background-clip: padding-box;
-  border: 1px solid var(--Negro);
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }

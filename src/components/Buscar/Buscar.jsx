@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { Modal } from "../../components/Modal/Modal";
 import { CSVLink } from "react-csv";
+import Loader from "../Loader/Loader";
 
 export const Buscar = () => {
   const [servicios, setServicios] = useState([]);
@@ -19,19 +20,25 @@ export const Buscar = () => {
   const [serie, setSerie] = useState("");
   const [zona, setZona] = useState(null);
   const [ficha, setFicha] = useState(0);
+  const baseURL = process.env.REACT_APP_API_URL;
+  const [bandera, setBandera] = useState(false)
+  const [refresh, setRefresh] = useState(false);
+
 
   useEffect(() => {
-    if (!userc.token) {
-      navigate("/login");
-    }
-    if (filtro !== "null") {
+    
+    setBandera(true);
+
+    if (filtro === "") {
       obtenerServicios();
+    } else {
+      applyfilter()
     }
-  }, [filtro]);
+  }, [refresh]);
 
   const obtenerServicios = async () => {
     try {
-      await fetch("http://127.0.0.1:9000/api/servicios", {
+      await fetch(baseURL + "/servicios", {
         headers: { authorization: tokendusuario },
       })
         .then((resp) => resp.json())
@@ -48,11 +55,13 @@ export const Buscar = () => {
       setMensajeModal(e.message);
       setEstadoModal(true);
     }
+
+    setBandera(false);
   };
 
   const obtenerServiciosxzona = async () => {
     try {
-      const url = "http://127.0.0.1:9000/api/servicios/zona/" + zona;
+      const url = baseURL + "/servicios/zona/" + zona;
       console.log(url);
       await fetch(url, {
         headers: { authorization: tokendusuario },
@@ -71,11 +80,12 @@ export const Buscar = () => {
       setMensajeModal(e.message);
       setEstadoModal(true);
     }
+    setBandera(false);
   };
 
   const obtenerServiciosxid = async () => {
     try {
-      const url = "http://127.0.0.1:9000/api/servicios/id/" + id;
+      const url = baseURL + "/servicios/id/" + id;
       console.log(url);
       await fetch(url, {
         headers: { authorization: tokendusuario },
@@ -94,11 +104,12 @@ export const Buscar = () => {
       setMensajeModal(e.message);
       setEstadoModal(true);
     }
+    setBandera(false);
   };
 
   const obtenerServiciosxficha = async () => {
     try {
-      const url = "http://127.0.0.1:9000/api/servicios/ficha/" + ficha;
+      const url = baseURL + "/servicios/ficha/" + ficha;
       console.log(url);
       await fetch(url, {
         headers: { authorization: tokendusuario },
@@ -117,11 +128,12 @@ export const Buscar = () => {
       setMensajeModal(e.message);
       setEstadoModal(true);
     }
+    setBandera(false);
   };
 
   const obtenerServiciosxserie = async () => {
     try {
-      const url = "http://127.0.0.1:9000/api/servicios/serie/" + serie;
+      const url = baseURL + "/servicios/serie/" + serie;
       console.log(url);
       await fetch(url, {
         headers: { authorization: tokendusuario },
@@ -140,12 +152,13 @@ export const Buscar = () => {
       setMensajeModal(e.message);
       setEstadoModal(true);
     }
+    setBandera(false);
   };
 
   const borrar = async (item) => {
     const idobjeto = { _id: item._id };
     try {
-      await fetch("http://127.0.0.1:9000/api/servicios/borrar", {
+      await fetch(baseURL + "/servicios/borrar", {
         method: "POST",
         body: JSON.stringify(idobjeto), // data {object}
         headers: {
@@ -169,6 +182,7 @@ export const Buscar = () => {
       setMensajeModal(e.message);
       setEstadoModal(true);
     }
+    setRefresh(!refresh);
   };
 
   const actualizar = (reg) => {
@@ -251,6 +265,7 @@ export const Buscar = () => {
     setId(0);
     setSerie("");
     setFicha(0);
+    setRefresh(!refresh);
   };
 
   return (
@@ -285,7 +300,19 @@ export const Buscar = () => {
               </select>
             </div>
 
-            {filtro === "" && <div className={styles.inputgroup}></div>}
+            {filtro === "" && (
+              <div className={styles.inputgroup}>
+                <label htmlFor="inputvar" className={styles.etiquetadeentrada}>
+                  Variable a buscar
+                </label>
+                <input
+                  type="text"
+                  className={styles.campodeentrada}
+                  id="inputvar"
+                  Defaultvalue=""
+                />
+              </div>
+            )}
 
             {filtro === "ID" && (
               <div className={styles.inputgroup}>
@@ -464,7 +491,7 @@ export const Buscar = () => {
               } = servicio; //destructuring
 
               return (
-                <tr key={id} className={styles.linetable}>
+                <tr key={index} className={styles.linetable}>
                   <td>
                     <button
                       type="button"
@@ -533,6 +560,9 @@ export const Buscar = () => {
           mensaje={mensajeModal}
         />
       )}
+
+      {bandera && <Loader />} 
+
     </>
   );
 };

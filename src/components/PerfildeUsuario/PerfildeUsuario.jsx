@@ -26,6 +26,7 @@ function PerfildeUsuario(props) {
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const handleSubmitr = async (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ function PerfildeUsuario(props) {
 
   const updateRegistro = async () => {
     try {
-      return fetch("http://127.0.0.1:9000/api/usuarios/actualizar", {
+      return fetch(baseURL + "/usuarios/actualizar", {
         method: "POST",
         body: JSON.stringify({ id, nombre, email }),
         headers: {
@@ -51,6 +52,8 @@ function PerfildeUsuario(props) {
           console.log(response);
           sessionStorage.setItem("nombreUsuario", response.data.nombre);
           sessionStorage.setItem("correoUsuario", response.data.email);
+          setNombre(response.data.nombre);
+          setEmail(response.data.email);
           setEncabezadoModal("Succesfull");
           setTituloModal("Registro");
           setMensajeModal(response.message);

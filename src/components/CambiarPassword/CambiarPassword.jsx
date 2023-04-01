@@ -19,6 +19,7 @@ const CambiarPassword = (props) => {
   const [encabezadoModal, setEncabezadoModal] = useState("");
   const [tituloModal, setTituloModal] = useState("");
   const [mensajeModal, setMensajeModal] = useState("");
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const handleSubmitr = async (e) => {
     e.preventDefault();
@@ -36,7 +37,7 @@ const CambiarPassword = (props) => {
 
   const updatePassword = async () => {
     try {
-      return fetch("http://127.0.0.1:9000/api/usuarios/actpassword", {
+      return fetch(baseURL + "/usuarios/actpassword", {
         method: "POST",
         body: JSON.stringify({ id, password }), // data {object}
         headers: {

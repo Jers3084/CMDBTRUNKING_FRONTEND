@@ -240,7 +240,7 @@ export const Buscar = () => {
         break;
 
       case "FICHA":
-        if (ficha !== 0) {
+        if (ficha >= 0) {
           obtenerServiciosxficha();
         }
         break;
@@ -323,6 +323,7 @@ export const Buscar = () => {
                   type="number"
                   className={styles.campodeentrada}
                   id="inputId"
+                  min="0"
                   required
                   value={id}
                   onChange={(e) => {
@@ -365,6 +366,7 @@ export const Buscar = () => {
                   type="number"
                   className={styles.campodeentrada}
                   id="inputFicha"
+                  min="0"
                   required
                   value={ficha}
                   onChange={(e) => {
@@ -549,6 +551,9 @@ export const Buscar = () => {
             })}
           </tbody>
         </table>
+        <footer>
+<p className={styles.piedepagina} >{servicios.length} Registros</p>
+        </footer>
       </div>
 
       {estadoModal && (
